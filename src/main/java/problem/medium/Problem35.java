@@ -12,6 +12,8 @@ public class Problem35 {
      */
     public static String findLongestWord(List<String> words) {
         // 여기에 코드 작성
-        return null;
+        return words.stream()
+                .max((w1, w2) -> Integer.compare(w1.length(), w2.length()))
+                .orElse("");
     }
 }
