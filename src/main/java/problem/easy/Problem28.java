@@ -13,6 +13,7 @@ public class Problem28 {
      */
     public static Optional<String> findLongestString(List<String> strings) {
         // 여기에 코드 작성
-        return Optional.empty();
+        return strings.stream()
+                .max((s1, s2) -> Integer.compare(s1.length(), s2.length()));
     }
 }

@@ -13,6 +13,8 @@ public class Problem27 {
      */
     public static OptionalDouble calculateAverage(List<Integer> numbers) {
         // 여기에 코드 작성
-        return OptionalDouble.empty();
+        return numbers.stream()
+                .mapToInt(Integer::intValue) // IntStream으로 변경
+                .average();
     }
 }
