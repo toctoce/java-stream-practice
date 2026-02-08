@@ -8,19 +8,40 @@ import problem.medium.resources.Product;
 public class Problem60 {
 
     /**
-     * 주어진 고객(Customer) 리스트와 직원(Employee) 리스트를 사용하여,
-     * 'IT' 부서 직원들이 주문한 'Electronics' 제품의 총 가격을 계산합니다.
-     * 이때, 고객 이름과 직원 이름이 일치하는 경우에만 해당 고객의 주문을 고려합니다.
+     * 주어진 고객(Customer) 리스트와 직원(Employee) 리스트를 사용하여, 'IT' 부서 직원들이 주문한 'Electronics' 제품의 총 가격을 계산합니다. 이때, 고객 이름과 직원 이름이
+     * 일치하는 경우에만 해당 고객의 주문을 고려합니다.
      *
      * @param customers 고객 리스트
      * @param employees 직원 리스트
-     * @param products 제품 리스트 (제품 이름과 가격 정보 포함)
+     * @param products  제품 리스트 (제품 이름과 가격 정보 포함)
      * @return 'IT' 부서 직원들이 주문한 'Electronics' 제품의 총 가격
      */
     public static double calculateTotalPriceOfElectronicsOrderedByITEmployees(List<Customer2> customers,
                                                                               List<Employee> employees,
                                                                               List<Product> products) {
         // 여기에 코드 작성
-        return 0.0;
+        return customers.stream()
+                .filter(customer -> {
+                    List<String> itEmployees = employees.stream()
+                            .filter(employee -> employee.getDepartment().equals("IT"))
+                            .map(Employee::getName)
+                            .toList();
+                    return itEmployees.contains(customer.getName());
+                })
+                .flatMap(customer -> customer.getOrders().stream())
+                .filter(order -> {
+                    List<String> electronics = List.of("Smartphone", "Laptop");
+                    return electronics.contains(order.getProduct());
+                })
+                .mapToDouble(order -> {
+                    int quantity = order.getQuantity();
+                    double price = products.stream()
+                            .filter(product -> product.getName().equals(order.getProduct()))
+                            .findFirst()
+                            .map(Product::getPrice)
+                            .orElse(0.0);
+                    return quantity * price;
+                })
+                .sum();
     }
 }
