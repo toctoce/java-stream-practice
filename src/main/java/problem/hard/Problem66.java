@@ -12,6 +12,8 @@ public class Problem66 {
      */
     public static long countUniqueNumbers(List<Integer> numbers) {
         // 여기에 코드 작성
-        return 0;
+        return numbers.stream()
+                .filter(num1 -> numbers.stream().filter(num2 -> num1 == num2).count() == 1)
+                .count();
     }
 }
